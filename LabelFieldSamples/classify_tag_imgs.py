@@ -6,7 +6,7 @@ import torch, gc
 
 # --- CONFIG ---
 MODEL_PATH = "tag_classifier.pt"
-IMG_DIR = Path("data")
+IMG_DIR = Path("../data")
 TAG_CLASS_NAME = "tag"
 CONF_THRESH = 0.8
 PREFIX = "tag_"
