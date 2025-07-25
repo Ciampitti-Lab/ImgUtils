@@ -65,10 +65,6 @@ class CornSampleProcessor:
         filename = image_path.stem
         clean = filename[4:] if filename.lower().startswith("tag_") else filename
 
-        m = re.match(r"IMG_(\d+)", clean, re.IGNORECASE)
-        if m:
-            return int(m.group(1))
-
         m = re.match(r"IMG_(\d{8})_(\d{6})", clean, re.IGNORECASE)
         if m:
             return int(m.group(1) + m.group(2))
@@ -76,6 +72,10 @@ class CornSampleProcessor:
         m = re.match(r"(\d{8})_(\d{6})", clean)
         if m:
             return int(m.group(1) + m.group(2))
+
+        m = re.match(r"IMG_(\d+)", clean, re.IGNORECASE)
+        if m:
+            return int(m.group(1))
 
         nums = re.findall(r"\d+", clean)
         if nums:
