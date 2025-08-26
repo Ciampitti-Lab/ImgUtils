@@ -94,9 +94,18 @@ def compile_csvs(base_dir: Path) -> List[TransformedRow]:
     all_rows: List[TransformedRow] = []
     for csv_file in iter_csv_files(base_dir):
         all_rows.extend(extract_rows_from_csv(csv_file))
+    
+    # Remove duplicates based on QR code, keeping first occurrence
+    seen_qrs = set()
+    unique_rows = []
+    for row in all_rows:
+        if row.qr and row.qr not in seen_qrs:
+            seen_qrs.add(row.qr)
+            unique_rows.append(row)
+    
     # Sort by QR code lexicographically
-    all_rows.sort(key=lambda r: r.qr)
-    return all_rows
+    unique_rows.sort(key=lambda r: r.qr)
+    return unique_rows
 
 
 def write_compiled(rows: List[TransformedRow], output_path: Path) -> None:
@@ -142,9 +151,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"Error: base directory not found: {base_dir}", file=sys.stderr)
         return 2
 
+    # Count total rows before deduplication for reporting
+    total_rows = 0
+    for csv_file in iter_csv_files(base_dir):
+        total_rows += len(extract_rows_from_csv(csv_file))
+    
     rows = compile_csvs(base_dir)
     write_compiled(rows, output_path)
-    print(f"Wrote {len(rows)} rows to {output_path}")
+    
+    duplicates_removed = total_rows - len(rows)
+    if duplicates_removed > 0:
+        print(f"Wrote {len(rows)} unique rows to {output_path} (removed {duplicates_removed} duplicates)")
+    else:
+        print(f"Wrote {len(rows)} rows to {output_path} (no duplicates found)")
     return 0
 
 
