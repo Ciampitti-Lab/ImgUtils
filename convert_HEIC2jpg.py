@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 HEIC to JPG Converter with Full Metadata Preservation
 

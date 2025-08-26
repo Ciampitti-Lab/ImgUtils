@@ -4,15 +4,14 @@ from collections import Counter
 from tqdm import tqdm
 import torch, gc
 
-# --- CONFIG ---
+# Hardcoded config should change later 
 MODEL_PATH = "tag_classifier.pt"
-IMG_DIR = Path("../data")
+IMG_DIR = Path("../../CornDethV2/Quinn/Raw/CS")
 TAG_CLASS_NAME = "tag"
 CONF_THRESH = 0.8
 PREFIX = "tag_"
 DEVICE = "cuda:0"
-
-# ----------------
+#---------------------------------
 
 model = YOLO(MODEL_PATH)
 model.to(DEVICE)
@@ -50,7 +49,7 @@ for img_path in tqdm(images, desc="Classifying & renaming", unit="img"):
     torch.cuda.empty_cache() if DEVICE.startswith("cuda") else None
     gc.collect()
 
-# --- Summary ---
+# Summary 
 print("\nCounts:")
 for cid, n in counts.items():
     print(f"{model.names[cid]} ({cid}): {n}")
