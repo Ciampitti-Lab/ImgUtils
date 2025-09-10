@@ -6,7 +6,7 @@ import torch, gc
 
 # Hardcoded config should change later 
 MODEL_PATH = "tag_classifier.pt"
-IMG_DIR = Path("../../CornDethV2/Quinn/Raw/CS")
+IMG_DIR = Path("../../CornDepthV2/Quinn/Raw/Pedro_Tall")
 TAG_CLASS_NAME = "tag"
 CONF_THRESH = 0.8
 PREFIX = "tag_"
